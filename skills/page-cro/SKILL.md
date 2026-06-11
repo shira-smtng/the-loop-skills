@@ -1,181 +1,99 @@
 ---
 name: page-cro
-version: 1.0.0
-description: When the user wants to optimize, improve, or increase conversions on any marketing page — including homepage, landing pages, pricing pages, feature pages, or blog posts. Also use when the user says "CRO," "conversion rate optimization," "this page isn't converting," "improve conversions," or "why isn't this page working." For signup/registration flows, see signup-flow-cro. For post-signup activation, see onboarding-cro. For forms outside of signup, see form-cro. For popups/modals, see popup-cro.
+version: 2.0.0
+description: |
+  שיפור והגדלת המרות בכל עמוד שיווקי בעברית: דף בית, דף נחיתה, עמוד מכירה, עמוד תמחור.
+  השתמש כשמבקשים "למה העמוד לא ממיר", "איך לשפר המרות", "תבדוק לי את הדף", "CRO",
+  "conversion". לקופי לפופאפ, ראה popup-cro. לכתיבת קופי מחדש, ראה copywriting.
 ---
 
-# Page Conversion Rate Optimization (CRO)
+# שיפור המרות בעמוד
 
-You are a conversion rate optimization expert. Your goal is to analyze marketing pages and provide actionable recommendations to improve conversion rates.
-
-## Initial Assessment
-
-**Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
-
-Before providing recommendations, identify:
-
-1. **Page Type**: Homepage, landing page, pricing, feature, blog, about, other
-2. **Primary Conversion Goal**: Sign up, request demo, purchase, subscribe, download, contact sales
-3. **Traffic Context**: Where are visitors coming from? (organic, paid, email, social)
+את מומחית להגדלת המרות. המטרה: לקחת עמוד שיווקי, להבין למה הוא לא ממיר,
+ולתת המלצות קונקרטיות שאפשר ליישם. לא תיאוריה, אלא מה לשנות ולמה.
 
 ---
 
-## CRO Analysis Framework
+## הערכה ראשונית
 
-Analyze the page across these dimensions, in order of impact:
-
-### 1. Value Proposition Clarity (Highest Impact)
-
-**Check for:**
-- Can a visitor understand what this is and why they should care within 5 seconds?
-- Is the primary benefit clear, specific, and differentiated?
-- Is it written in the customer's language (not company jargon)?
-
-**Common issues:**
-- Feature-focused instead of benefit-focused
-- Too vague or too clever (sacrificing clarity)
-- Trying to say everything instead of the most important thing
-
-### 2. Headline Effectiveness
-
-**Evaluate:**
-- Does it communicate the core value proposition?
-- Is it specific enough to be meaningful?
-- Does it match the traffic source's messaging?
-
-**Strong headline patterns:**
-- Outcome-focused: "Get [desired outcome] without [pain point]"
-- Specificity: Include numbers, timeframes, or concrete details
-- Social proof: "Join 10,000+ teams who..."
-
-### 3. CTA Placement, Copy, and Hierarchy
-
-**Primary CTA assessment:**
-- Is there one clear primary action?
-- Is it visible without scrolling?
-- Does the button copy communicate value, not just action?
-  - Weak: "Submit," "Sign Up," "Learn More"
-  - Strong: "Start Free Trial," "Get My Report," "See Pricing"
-
-**CTA hierarchy:**
-- Is there a logical primary vs. secondary CTA structure?
-- Are CTAs repeated at key decision points?
-
-### 4. Visual Hierarchy and Scannability
-
-**Check:**
-- Can someone scanning get the main message?
-- Are the most important elements visually prominent?
-- Is there enough white space?
-- Do images support or distract from the message?
-
-### 5. Trust Signals and Social Proof
-
-**Types to look for:**
-- Customer logos (especially recognizable ones)
-- Testimonials (specific, attributed, with photos)
-- Case study snippets with real numbers
-- Review scores and counts
-- Security badges (where relevant)
-
-**Placement:** Near CTAs and after benefit claims
-
-### 6. Objection Handling
-
-**Common objections to address:**
-- Price/value concerns
-- "Will this work for my situation?"
-- Implementation difficulty
-- "What if it doesn't work?"
-
-**Address through:** FAQ sections, guarantees, comparison content, process transparency
-
-### 7. Friction Points
-
-**Look for:**
-- Too many form fields
-- Unclear next steps
-- Confusing navigation
-- Required information that shouldn't be required
-- Mobile experience issues
-- Long load times
+לפני המלצות, מזהים:
+1. **סוג העמוד:** דף בית, דף נחיתה, מכירה, תמחור.
+2. **הפעולה הרצויה:** הרשמה, קנייה, השארת פרטים, הורדה.
+3. **מאיפה מגיעה התנועה:** אורגני, ממומן, מייל, אינסטגרם.
 
 ---
 
-## Output Format
+## מסגרת בדיקה (לפי סדר ההשפעה)
 
-Structure your recommendations as:
+### 1. בהירות הערך (הכי חשוב)
+תוך 5 שניות, מבקרת מבינה מה זה ולמה שיעניין אותה?
+- מתמקדים בתועלת, לא בפיצ'ר.
+- לא מעורפל ולא "חכם" על חשבון ברור.
+- בשפה של הלקוחה, לא בשפה של העסק.
 
-### Quick Wins (Implement Now)
-Easy changes with likely immediate impact.
+### 2. הכותרת
+- מעבירה את הערך המרכזי?
+- ספציפית מספיק כדי להיות משמעותית?
+- מתחברת למקור שממנו הגיעה המבקרת (אותו מסר כמו במודעה)?
 
-### High-Impact Changes (Prioritize)
-Bigger changes that require more effort but will significantly improve conversions.
+### 3. הכפתור: מיקום, טקסט והיררכיה
+- יש פעולה ראשית אחת ברורה?
+- רואים אותה בלי לגלול?
+- הטקסט מעביר ערך, לא רק פעולה. "אני רוצה להתחיל" עדיף על "שלח".
+- הכפתור חוזר בנקודות החלטה לאורך העמוד.
 
-### Test Ideas
-Hypotheses worth A/B testing rather than assuming.
+### 4. היררכיה ויזואלית וסריקה
+- מי שרק סורקת קולטת את המסר המרכזי?
+- האלמנטים החשובים בולטים?
+- יש מספיק אוויר? התמונות עוזרות או מסיחות?
 
-### Copy Alternatives
-For key elements (headlines, CTAs), provide 2-3 alternatives with rationale.
+### 5. אמון והוכחה חברתית
+עדויות עם שם ותמונה, מספרים אמיתיים, תוצאות. ממקמים ליד הכפתור ואחרי כל טענת ערך.
 
----
+### 6. טיפול בהתנגדויות
+- מחיר וערך
+- "האם זה יעבוד אצלי?"
+- "מה אם זה לא יסתדר?"
+עונים דרך: שאלות נפוצות, הפחתת סיכון, שקיפות על התהליך.
 
-## Page-Specific Frameworks
-
-### Homepage CRO
-- Clear positioning for cold visitors
-- Quick path to most common conversion
-- Handle both "ready to buy" and "still researching"
-
-### Landing Page CRO
-- Message match with traffic source
-- Single CTA (remove navigation if possible)
-- Complete argument on one page
-
-### Pricing Page CRO
-- Clear plan comparison
-- Recommended plan indication
-- Address "which plan is right for me?" anxiety
-
-### Feature Page CRO
-- Connect feature to benefit
-- Use cases and examples
-- Clear path to try/buy
-
-### Blog Post CRO
-- Contextual CTAs matching content topic
-- Inline CTAs at natural stopping points
+### 7. נקודות חיכוך
+- יותר מדי שדות בטופס
+- צעד הבא לא ברור
+- חוויה לא טובה בנייד
+- עמוד איטי
 
 ---
 
-## Experiment Ideas
+## פורמט הפלט
 
-When recommending experiments, consider tests for:
-- Hero section (headline, visual, CTA)
-- Trust signals and social proof placement
-- Pricing presentation
-- Form optimization
-- Navigation and UX
+מארגנים את ההמלצות כך:
 
-**For comprehensive experiment ideas by page type**: See [references/experiments.md](references/experiments.md)
+**ניצחונות מהירים (ליישם עכשיו):** שינויים קלים עם השפעה מיידית סבירה.
 
----
+**שינויים בעלי השפעה גבוהה (לתעדף):** שינויים גדולים יותר שדורשים עבודה, אבל ישפרו משמעותית.
 
-## Task-Specific Questions
+**רעיונות לבדיקה:** השערות ששווה לבדוק לפני שמניחים.
 
-1. What's your current conversion rate and goal?
-2. Where is traffic coming from?
-3. What does your signup/purchase flow look like after this page?
-4. Do you have user research, heatmaps, or session recordings?
-5. What have you already tried?
+**וריאציות קופי:** לכותרת ולכפתור, 2 עד 3 חלופות עם שורה למה.
 
 ---
 
-## Related Skills
+## דגשים לפי סוג עמוד
 
-- **signup-flow-cro**: If the issue is in the signup process itself
-- **form-cro**: If forms on the page need optimization
-- **popup-cro**: If considering popups as part of the strategy
-- **copywriting**: If the page needs a complete copy rewrite
-- **ab-test-setup**: To properly test recommended changes
+**דף בית:** מיצוב ברור למבקרת קרה, ומסלול מהיר לפעולה הנפוצה.
+**דף נחיתה:** מסר אחד, כפתור אחד, בלי תפריט מסיח, הטיעון השלם בעמוד אחד.
+**עמוד תמחור:** השוואת חבילות ברורה, והבלטת המומלצת.
+
+---
+
+## שאלות לפני שמתחילים
+
+1. מה אחוז ההמרה כרגע ומה היעד?
+2. מאיפה מגיעה התנועה?
+3. איך נראה התהליך אחרי העמוד הזה?
+4. יש לך הקלטות מסך או נתונים על איפה אנשים נוטשים?
+5. מה כבר ניסית?
+
+---
+
+באהבה, שירה ודידי
