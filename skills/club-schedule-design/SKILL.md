@@ -19,26 +19,36 @@ Puppeteer (Node.js) → screenshot 1080×1080 JPEG
 ```
 
 **כלים נדרשים:**
-- Python 3 + Pillow (`pip3 install Pillow`)
-- Node.js + Puppeteer at `/tmp/node_modules/puppeteer` (install if missing: `cd /tmp && npm install puppeteer`)
-- puppeteer script always run from `/tmp/` directory
+- Python 3 + Pillow — `pip install Pillow` (אם `pip` לא עובד נסה `pip3` במק/לינוקס או `py -m pip` בווינדוס)
+- Node.js + Puppeteer
+
+**תיקיית עבודה (WORKDIR):** עובדים בתוך תיקיית הפרויקט הנוכחית (היכן ש-Claude Code פתוח). כל הקבצים — `shot_final.js`, ה-HTML וה-JPEG — נשמרים שם. כך זה עובד זהה במק ובווינדוס בלי נתיבים קשיחים. **אל תשתמש ב-`/tmp`** — הוא לא קיים בווינדוס.
+
+התקנת Puppeteer בתיקיית העבודה אם חסר:
+```bash
+npm install puppeteer
+```
 
 **Puppeteer render command (always use this template):**
+שמור את הקובץ הזה כ-`shot_final.js` בתיקיית העבודה. שים לב: הנתיבים ל-HTML ולפלט הם **יחסיים** לתיקייה שממנה מריצים, כך שהקוד זהה בכל מערכת הפעלה.
 ```javascript
-// /tmp/shot_final.js
+// shot_final.js — run from the working directory
 const puppeteer = require('puppeteer');
+const path = require('path');
 (async () => {
   const b = await puppeteer.launch({ headless:true, args:['--no-sandbox'], protocolTimeout:180000 });
   const p = await b.newPage();
   await p.setViewport({ width:1080, height:1080, deviceScaleFactor:2 });
-  await p.goto('file:///Users/shiratamary/Desktop/[FILE].html', { waitUntil:'networkidle0', timeout:60000 });
+  // path.resolve + file:// URL works on Mac, Windows and Linux
+  const htmlPath = path.resolve('[FILE].html');
+  await p.goto('file://' + htmlPath.replace(/\\/g, '/'), { waitUntil:'networkidle0', timeout:60000 });
   await new Promise(r=>setTimeout(r,3000));
-  await p.screenshot({ path:'/Users/shiratamary/Desktop/לוז-[MONTH]-חם.jpg', type:'jpeg', quality:94, clip:{x:0,y:0,width:1080,height:1080} });
+  await p.screenshot({ path:'לוז-[MONTH]-חם.jpg', type:'jpeg', quality:94, clip:{x:0,y:0,width:1080,height:1080} });
   console.log('Done');
   await b.close();
 })();
 ```
-Always run: `cd /tmp && node shot_final.js`
+הרצה (מתוך תיקיית העבודה): `node shot_final.js`
 
 ---
 
@@ -134,24 +144,27 @@ Heebo (Google Fonts) — `@import url('https://fonts.googleapis.com/css2?family=
 
 ## עיבוד תמונות — Python/PIL
 
+> **נתיבי תמונות:** שאל את המשתמש איפה נמצאות תמונות הצוות, או בקש שיגרור אותן לתיקיית העבודה. בקוד למטה החלף את `SRC` בנתיב שהמשתמש נתן. נתיבים יחסיים (כמו `"didi.jpg"` אם הקובץ בתיקיית העבודה) עובדים זהה במק ובווינדוס. הקואורדינטות לחיתוך למטה מתאימות לתמונות המקור המקוריות — התאם אם התמונה שונה.
+
 ### Didi (דידי ג׳ונסון)
-- קובץ מקור: `/Users/shiratamary/Downloads/דידי חדש.jpg` (3522×5283)
+- מקור לדוגמה: ~3522×5283
 - חיתוך אידיאלי: cx=1761, cy=1480, half=550 → 1100×1100 → resize 400px
 ```python
 from PIL import Image
 import base64, io
-img = Image.open("/Users/shiratamary/Downloads/דידי חדש.jpg").convert("RGB")
+SRC = "didi.jpg"   # ← נתיב שהמשתמש נתן (יחסי לתיקיית העבודה, או נתיב מלא)
+img = Image.open(SRC).convert("RGB")
 crop = img.crop((1211, 930, 2311, 2030)).resize((400,400), Image.LANCZOS)
 buf = io.BytesIO(); crop.save(buf,"JPEG",quality=95)
 b64 = base64.b64encode(buf.getvalue()).decode()
 ```
 
 ### Shira (שירה תמרי)
-- קובץ מקור: `/Users/shiratamary/Desktop/תמונות לעמוד נחיתה/תמונה לשימוש שירה.jpg` (1067×1600)
+- מקור לדוגמה: ~1067×1600
 - חיתוך: 1067×1067 מ-y=100 → resize 400px
 
 ### Josh (ג׳וש ג׳ונסון)
-- קובץ מקור: `/Users/shiratamary/Desktop/תמונות לעמוד נחיתה/תמונה לשימוש ג׳וש.png` (208×216)
+- מקור לדוגמה: ~208×216
 - **חשוב:** יש להחליף רקע בז׳ (252,239,229) בחום (122,74,58) עם flood fill מהפינות
 - חיתוך: portrait 178×209 (cx=104, cy=82, x0=15,y0=1,x1=193,y1=210) → resize 380×446
 - CSS על התמונה: `object-position: center top`
@@ -159,7 +172,7 @@ b64 = base64.b64encode(buf.getvalue()).decode()
 
 ```python
 from PIL import Image, ImageDraw
-img = Image.open(".../ג׳וש.png").convert("RGB")
+img = Image.open("josh.png").convert("RGB")   # ← נתיב שהמשתמש נתן
 brown = (122, 74, 58)
 for corner in [(0,0),(207,0),(0,215),(207,215)]:
     ImageDraw.floodfill(img, corner, brown, thresh=30)
@@ -191,8 +204,11 @@ resized = crop.resize((380, round(209*380/178)), Image.LANCZOS)
 ---
 
 ## קבצי פלט
-- HTML: `/Users/shiratamary/Desktop/לוז-[month]-warm-vN.html`
-- JPEG: `/Users/shiratamary/Desktop/לוז-[month]-חם.jpg`
+נשמרים בתיקיית העבודה (נתיבים יחסיים — עובד בכל מערכת):
+- HTML: `לוז-[month]-warm-vN.html`
+- JPEG: `לוז-[month]-חם.jpg`
+
+בסיום אפשר לפתוח את ה-JPEG: `open` (מק) / `start` (ווינדוס) / `xdg-open` (לינוקס).
 
 ---
 
@@ -203,5 +219,5 @@ resized = crop.resize((380, round(209*380/178)), Image.LANCZOS)
 3. **Josh:** object-position: center top + brown background
 4. **RTL flex:** event-info ראשון ב-HTML = ימין, date-col אחרון = שמאל
 5. **padding ב-event-info:** `padding: 11px 170px 11px 16px` — מרווח לתמונה מימין
-6. **Puppeteer:** תמיד `cd /tmp` לפני הרצה, `protocolTimeout:180000`
+6. **Puppeteer:** הרץ מתוך תיקיית העבודה (לא `/tmp` — לא קיים בווינדוס), `protocolTimeout:180000`
 7. **אין לכתוב:** "מובטח", "ללא סיכון", מקף ארוך (—)

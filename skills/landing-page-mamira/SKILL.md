@@ -187,8 +187,19 @@ h1, h2, h3 { font-family: 'Heebo', sans-serif; }
 ```
 
 ### שמור והרץ
+פותחים את הקובץ בדפדפן לפי מערכת ההפעלה:
+
 ```bash
+# Mac
 open landing-page.html
+```
+```powershell
+# Windows
+start landing-page.html
+```
+```bash
+# Linux
+xdg-open landing-page.html
 ```
 
 ---
