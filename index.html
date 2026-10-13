@@ -102,6 +102,7 @@
     background:var(--purple-soft);padding:3px 10px;border-radius:999px;margin-bottom:12px;align-self:flex-start;
   }
   .card .c-desc{font-size:15px;color:#444;flex:1 1 auto;margin-bottom:16px}
+  .card .c-note{font-size:13px;color:var(--gray-soft);margin:-8px 0 14px}
   .card .c-actions{display:flex;gap:8px;align-items:stretch}
   .btn-copy{
     flex:1 1 auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;
@@ -158,7 +159,7 @@
   <div class="chips" id="chips"></div>
 
   <div class="banner">
-    <span class="b-txt"><b>רוצה הכל בבת אחת?</b> &nbsp;התקיני את כל ה-25 סקילים בפקודה אחת.</span>
+    <span class="b-txt"><b>רוצה הכל בבת אחת?</b> &nbsp;התקיני את כל ה-<span id="all-count">25</span> סקילים בפקודה אחת.</span>
     <button class="btn-copy" style="flex:0 0 auto" onclick="copyAll(this)"><span>⬇︎</span> העתק התקנת הכל</button>
   </div>
 
@@ -175,8 +176,14 @@
 const REPO = "shira-smtng/the-loop-skills";
 const BASE = "https://github.com/" + REPO;
 
+// skills that only work together: installing any one of them installs the whole set
+const VIDEO_BUNDLE = ["hyperframes","hyperframes-core","hyperframes-animation","hyperframes-audio","hyperframes-cli","hyperframes-creative","hyperframes-keyframes","hyperframes-registry","hyperframes-studio","media-use","general-video","product-launch-video"];
+
 function installCmd(name){
-  return `curl -sL ${BASE}/archive/main.tar.gz | tar -xz -C /tmp && cp -r /tmp/the-loop-skills-main/skills/${name} ~/.claude/skills/ && rm -rf /tmp/the-loop-skills-main`;
+  const s = SKILLS.find(x=>x.name===name);
+  const dirs = (s && s.bundle) ? s.bundle : [name];
+  const src = dirs.map(d=>`/tmp/the-loop-skills-main/skills/${d}`).join(" ");
+  return `curl -sL ${BASE}/archive/main.tar.gz | tar -xz -C /tmp && cp -r ${src} ~/.claude/skills/ && rm -rf /tmp/the-loop-skills-main`;
 }
 function installAllCmd(){
   return `curl -sL ${BASE}/archive/main.tar.gz | tar -xz -C /tmp && cp -r /tmp/the-loop-skills-main/skills/* ~/.claude/skills/ && rm -rf /tmp/the-loop-skills-main`;
@@ -201,6 +208,10 @@ const SKILLS = [
 
   {name:"landing-page-mamira", cat:"landing", emoji:"🚀", title:"דף נחיתה בעברית", desc:"בונה דף נחיתה עברי שלם וחי, מהקופי ועד העיצוב, קובץ מוכן לפתיחה."},
   {name:"landing-page-design", cat:"landing", emoji:"📐", title:"עקרונות דף ממיר", desc:"כללי עיצוב ופסיכולוגיה של דפים שממירים: כותרת, כפתור, הוכחה חברתית."},
+  {name:"frontend-design",     cat:"landing", emoji:"🖌️", title:"עיצוב עם אופי", desc:"הסקיל הרשמי של Anthropic לעיצוב עמודים ייחודיים ומקצועיים, עם פונטים, צבעים ומבנה שבולטים."},
+  {name:"design-taste-frontend",cat:"landing", emoji:"✨", title:"עמוד שלא נראה כמו AI", desc:"מוודא שהעמוד שלך לא ייראה כמו עוד תבנית, אלא כמו משהו שעוצב במיוחד בשבילך."},
+  {name:"emil-design-eng",     cat:"landing", emoji:"💎", title:"הליטוש הקטן", desc:"הפרטים שגורמים לעמוד להרגיש יוקרתי: מרווחים, כפתורים ותנועות עדינות שמרגישות נכון."},
+  {name:"apple-design",        cat:"landing", emoji:"🍎", title:"בסגנון אפל", desc:"מביא לעמוד את השקט והניקיון של אפל: טיפוגרפיה מדויקת, שכבות ותנועה רכה."},
 
   {name:"marketing-ideas",     cat:"marketing", emoji:"💡", title:"רעיונות שיווק", desc:"139 רעיונות וטקטיקות שיווק מוכחים, לפי קטגוריות, כשנגמרת לך ההשראה."},
   {name:"marketing-psychology",cat:"marketing", emoji:"🧠", title:"פסיכולוגיה שיווקית", desc:"מודלים שמסבירים למה אנשים קונים, ואיך ליישם את זה בתוכן שלך."},
@@ -212,6 +223,7 @@ const SKILLS = [
   {name:"design-strategist",   cat:"design", emoji:"🎨", title:"אסטרטגיית עיצוב", desc:"בוחר לך סגנון, פלטת צבעים וכיוון ויזואלי שמתאים למוצר ולקהל."},
   {name:"club-schedule-design",cat:"design", emoji:"📅", title:"עיצוב לוז", desc:"מייצר תמונת לוח זמנים חודשי מעוצבת לוואטסאפ ולאינסטגרם."},
   {name:"carousel-design",     cat:"design", emoji:"🎠", title:"קרוסלה לאינסטגרם", desc:"בונה קרוסלה מעוצבת: שקפים עם תמונות וסרטונים, טקסט לבן עם קונטור, מוכן להעלאה."},
+  {name:"warm-carousel-design",cat:"design", emoji:"☁️", title:"קרוסלה חמימה בכתב יד", desc:"קרוסלה לאינסטגרם בסגנון חם, עם בועות ענן וכתב יד, בצבעים וב-handle שלך.", note:"צריך Node במחשב"},
 
   {name:"club-claude-guide",   cat:"club", emoji:"💜", title:"מדריך קלוד", desc:"מסבירה לך איך לבקש מקלוד נכון ולהוציא תוצאות טובות יותר לעסק."},
 
@@ -221,6 +233,10 @@ const SKILLS = [
   {name:"idea-refine",         cat:"hebrew", emoji:"✨", title:"ליטוש רעיונות", desc:"לוקח רעיון גולמי ומזקק אותו לכיוון ברור וממוקד."},
 
   {name:"install-silence-cutter",cat:"video", emoji:"🎬", title:"חותך שקט", desc:"מתקין תוסף לפרמייר שחותך שקטים אוטומטית מתוך הקלטות."},
+  {name:"product-launch-video",cat:"video", emoji:"🚀", title:"סרטון פרומו מלינק", desc:"נותנים לו לינק לעמוד או בריף קצר, והוא מפיק סרטון פרומו מעוצב למוצר או להשקה.", note:"צריך Node ו-FFmpeg · מתקין את כל חבילת הוידאו", bundle:VIDEO_BUNDLE},
+  {name:"hyperframes",         cat:"video", emoji:"🎞️", title:"סטודיו וידאו בקלוד", desc:"המנוע שבונה סרטונים, כתוביות מונפשות וגרפיקות. מגיע כחבילה של 9 סקילים שמותקנים יחד.", note:"צריך Node ו-FFmpeg · מתקין את כל חבילת הוידאו", bundle:VIDEO_BUNDLE},
+  {name:"media-use",           cat:"video", emoji:"🎵", title:"מוזיקה, סאונד ותמונות", desc:"מוצא לסרטון מוזיקת רקע, אפקטים קוליים ותמונות, ומשלב אותם במקום הנכון.", note:"צריך Node ו-FFmpeg · מתקין את כל חבילת הוידאו", bundle:VIDEO_BUNDLE},
+  {name:"general-video",       cat:"video", emoji:"🎥", title:"כל סרטון אחר", desc:"לסרטון שלא מתאים לתבנית מוכנה: מתארים מה רוצים, והוא בונה אותו מאפס.", note:"צריך Node ו-FFmpeg · מתקין את כל חבילת הוידאו", bundle:VIDEO_BUNDLE},
 
   {name:"docx", cat:"docs", emoji:"📄", title:"מסמכי Word", desc:"יוצר ועורך מסמכי Word מקצועיים: דוחות, מכתבים, תבניות."},
   {name:"pdf",  cat:"docs", emoji:"📕", title:"קבצי PDF", desc:"ממזג, חותך, ממלא טפסים ומחלץ טקסט מתוך קבצי PDF."},
@@ -236,6 +252,7 @@ const chipsEl = document.getElementById("chips");
 const emptyEl = document.getElementById("empty");
 
 document.getElementById("skill-count").textContent = SKILLS.length;
+document.getElementById("all-count").textContent = SKILLS.length;
 document.getElementById("cat-count").textContent = Object.keys(CATS).length;
 
 // chips
@@ -273,6 +290,7 @@ function render(){
       </div>
       <span class="c-cat">${CATS[s.cat].emoji} ${CATS[s.cat].label}</span>
       <p class="c-desc">${s.desc}</p>
+      ${s.note ? `<p class="c-note">${s.note}</p>` : ""}
       <div class="c-actions">
         <button class="btn-copy" onclick="copySkill('${s.name}',this)"><span>⧉</span> העתק התקנה</button>
         <a class="btn-ghost" href="${BASE}/tree/main/skills/${s.name}" target="_blank" rel="noopener" title="צפייה בסקיל ב-GitHub">↗</a>
