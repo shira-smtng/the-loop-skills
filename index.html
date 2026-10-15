@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="he" dir="rtl" class="locked">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>THE LOOP SKILLS</title>
+<meta name="robots" content="noindex, nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -130,14 +131,55 @@
   }
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+  /* Gate: כניסה עם מייל */
+  .locked .topbar,.locked .wrap{display:none}
+  .gate{
+    display:none;min-height:100vh;min-height:100dvh;
+    align-items:center;justify-content:center;padding:24px 16px;
+    background:linear-gradient(180deg,var(--purple-soft) 0%,#fff 70%);
+  }
+  .locked .gate{display:flex}
+  .gate-box{width:100%;max-width:420px;text-align:center}
+  .gate-box img{height:56px;width:auto;margin:0 auto 22px;display:block}
+  .gate-box h1{font-size:34px;font-weight:900;direction:ltr;line-height:1.1}
+  .gate-box h1 .accent{color:var(--purple)}
+  .gate-box p{color:var(--gray);font-size:17px;margin:12px 0 26px}
+  .gate-form{display:flex;flex-direction:column;gap:10px}
+  .gate-form input{
+    width:100%;padding:15px 18px;font-size:17px;font-family:inherit;text-align:center;
+    border:1px solid var(--purple-border);border-radius:14px;background:#fff;color:var(--ink);outline:none;
+    transition:border .15s,box-shadow .15s;
+  }
+  .gate-form input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
+  .gate-form .btn-copy{padding:15px;font-size:17px}
+  .gate-err{display:none;margin-top:14px;font-size:15px;color:#b42318;line-height:1.55}
+  .gate-err.on{display:block}
+  .gate-err a{color:var(--purple);font-weight:700}
+  .topbar .who{display:flex;align-items:center;gap:12px}
+  .topbar .logout{background:none;border:0;color:var(--purple);font:inherit;font-size:14px;font-weight:700;cursor:pointer;padding:0}
+  .topbar .logout:hover{text-decoration:underline}
+
   footer{text-align:center;color:var(--gray-soft);font-size:14px;margin-top:60px;padding-top:24px;border-top:1px solid var(--line)}
   footer b{color:var(--purple)}
 </style>
 </head>
 <body>
 
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <img src="https://shira-smtng.github.io/the-loop-skills/loop-logo.png" alt="LOOP">
+    <h1>THE LOOP <span class="accent">SKILLS</span></h1>
+    <p>העמוד הזה שמור לבוגרות הקלודתון.<br>הקלידי את המייל שאיתו נרשמת.</p>
+    <form class="gate-form" id="gate-form" novalidate>
+      <input id="gate-input" type="email" inputmode="email" autocomplete="email" placeholder="המייל שלך" dir="ltr" required>
+      <button class="btn-copy" type="submit">כניסה</button>
+    </form>
+    <div class="gate-err" id="gate-err" role="alert"></div>
+  </div>
+</div>
+
 <div class="topbar">
-  <span class="email">shira@somethingstudio.co.il</span>
+  <span class="who"><span class="email" id="who-email" dir="ltr"></span><button class="logout" id="logout" type="button">יציאה</button></span>
   <img class="brand-logo" src="https://shira-smtng.github.io/the-loop-skills/loop-logo.png" alt="LOOP">
 </div>
 
@@ -334,6 +376,69 @@ document.getElementById("search").addEventListener("input",e=>{query=e.target.va
 
 buildChips();
 render();
+
+/* =========================== gate ===========================
+   רשימת הגיבובים מתעדכנת עם python3 gate.py (מתוך emails.txt, שלא עולה ל-GitHub) */
+const ALLOWED = /*ALLOWED*/["027e45e46e5a095055f0", "0462a66b782bdd6920c6", "046c980824e125ba1b31", "0c2045cab92e81beecc3", "0cb8b4ed970f48c5c662", "104bf04a5e0f9808f8ea", "13df28accf63f3d7327e", "17c4149897676cfb6ffd", "193d452ab86303a1e530", "1c5be1a1f226c4262187", "1cfd611bcdf76b7650d1", "212b3b606ee88807c9f1", "21d8f3e0ff14fb637e4b", "241c60f413cf45b29823", "268340fd7fd476b5ecdf", "27c348a23644a1eb2462", "2a95af5b3d69e02a998f", "2f5842809a675e7febac", "311ada01c94a5c9a893c", "36ec1994452a579d4dba", "36fd54eab92bc125f712", "397751516fb38ea98e94", "3bfd83694297727cc716", "44d0f0baec60791a11a5", "4dacf484304646a4b43d", "55710997ddd6f7477937", "5653d880a63927d30997", "5e88f61f5557e6458dd1", "617b36d923ac381dfc9c", "687a6eac8f9e158cbc5b", "69eae1fb6f638c16afa6", "6a14cbbf655236c01d9e", "6b62d5024ac9c570e9b0", "6f1bd3cb735a59bdaf15", "6f3a11684f36d6f8d273", "7aaa8bbc1a2b5cdbe6aa", "7b247fd1f4e93f63fd05", "7ba2fb5afb626588b27c", "7c99fa2e5b922e19cc7a", "7d46b618db43b0d5f736", "7fed1e9ca4755746f83c", "81b945ba4955febc9f9c", "8318478c92f792bc8e17", "83b7383b1758dcbd4b22", "856e7a2bfbe60f2ac21a", "8aa7b38818ac7ca53bc3", "9018f939b50931344cdd", "98f047a958e6695837f1", "998aa1cdf096dd688b20", "9c709e3387430196b167", "a27cf3bf9dd3157de20b", "a317c20af9998517b902", "a46fae1afecbe93a8aed", "a55be8d8bc54400608b1", "a59cd84b5b0592f7899b", "ab5b26b26ad668b1d363", "b570b2f71878374927b2", "c03d9fa52109f1ff033b", "c20da0c4f721c77a1ec1", "c299ff22a442c4223c83", "c4c76eee03c9cadb33db", "c4e9454055976281559d", "c7831314f826be33e27f", "c9c77ae9ace400c1a2d2", "cda8664df09f5ee0acd3", "d013ae1c922a2a4b7e95", "d50c35ba5b6c398523f0", "da034b6861c0f0fef0ac", "dab8932b036808af107e", "de6ca1bcbe5604532529", "deb8e1333c062168a766", "df4251e94d00e63c861d", "e41bdd2a5b8939552743", "e5a92ba031c0ae84542a", "ea6f752b09dc094f000a", "eac96983eb644abe976f", "f04b9c3f1760103b071c", "fa4b0120c49414c71c7e", "fcd0af125686209c5a4b", "fe51759657597af0d43a", "feec23e01acb84eb1e02"]/*/ALLOWED*/;
+const GATE_KEY = "loop-skills-email";
+
+function normalizeEmail(raw){
+  let e = String(raw).toLowerCase().replace(/[\s\u00a0\ufeff\u200b-\u200f\u202a-\u202e\u2066-\u2069]/g, "");
+  if (e.startsWith("mailto:")) e = e.slice(7);
+  const at = e.lastIndexOf("@");
+  if (at === -1) return e;
+  let local = e.slice(0, at), domain = e.slice(at + 1);
+  if (domain === "gmail.com" || domain === "googlemail.com"){
+    local = local.split("+")[0].replace(/\./g, "");
+    domain = "gmail.com";
+  }
+  return local + "@" + domain;
+}
+async function emailToken(raw){
+  const data = new TextEncoder().encode("loop-skills:" + normalizeEmail(raw));
+  const buf = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("").slice(0,20);
+}
+function esc(s){ return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function store(k,v){ try{ v==null ? localStorage.removeItem(k) : localStorage.setItem(k,v); }catch(e){} }
+function read(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+
+function openSite(email){
+  document.getElementById("who-email").textContent = normalizeEmail(email);
+  document.documentElement.classList.remove("locked");
+}
+async function tryEnter(email, silent){
+  if (await emailToken(email).then(t=>ALLOWED.includes(t))){
+    store(GATE_KEY, email);
+    openSite(email);
+    return true;
+  }
+  if (!silent){
+    const err = document.getElementById("gate-err");
+    err.innerHTML = 'לא מצאנו את <b dir="ltr">' + esc(normalizeEmail(email)) + '</b> ברשימה.<br>' +
+      'נסי את המייל שאיתו נרשמת לקלודתון, או <a href="mailto:shira@somethingstudio.co.il?subject=' +
+      encodeURIComponent("גישה לעמוד הסקילים") + '">כתבי לנו</a>.';
+    err.classList.add("on");
+  }
+  return false;
+}
+
+document.getElementById("gate-form").addEventListener("submit", e=>{
+  e.preventDefault();
+  const v = document.getElementById("gate-input").value.trim();
+  if (!v) return;
+  tryEnter(v, false);
+});
+document.getElementById("logout").addEventListener("click", ()=>{
+  store(GATE_KEY, null);
+  document.getElementById("gate-input").value = "";
+  document.getElementById("gate-err").classList.remove("on");
+  document.documentElement.classList.add("locked");
+  window.scrollTo(0,0);
+});
+
+const saved = read(GATE_KEY);
+if (saved) tryEnter(saved, true);
 </script>
 </body>
 </html>
