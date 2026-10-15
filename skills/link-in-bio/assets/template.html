@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- ===== META: לשנות לשם ולמשפט של בעלת העסק ===== -->
+<title>{{NAME}} · {{SUBTITLE}}</title>
+<meta name="description" content="{{ONE_LINE}}">
+<meta property="og:title" content="{{NAME}} · {{SUBTITLE}}">
+<meta property="og:description" content="{{ONE_LINE}}">
+<!-- אחרי העלאה לאוויר: להחליף לכתובת מלאה, למשל https://my-links.vercel.app/assets/share.jpg -->
+<meta property="og:image" content="assets/share.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#f7e7d8">
+<link rel="icon" href="assets/avatar.jpg">
+<link rel="apple-touch-icon" href="assets/avatar.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- ===== FONTS: פונט כותרת + Assistant לטקסט. להחליף את Amatic SC לפי הבחירה ===== -->
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
+<style>
+/* ===== THEME: כל הצבעים והפונטים של העמוד נמצאים כאן בלבד ===== */
+:root{
+  --bg:#f7e7d8;          /* רקע העמוד */
+  --bg-soft:#fbf1e8;     /* רקע הכפתורים */
+  --ink:#261235;         /* טקסט ראשי */
+  --ink-soft:#3a2150;    /* טקסט הביו */
+  --muted:#6d5570;       /* טקסט משני */
+  --accent:#db98d4;      /* צבע מותג: מסגרות וריחוף */
+  --accent-deep:#96498f; /* צבע מותג כהה: מדבקה ותת-כותרת */
+  --accent-soft:#f3ddf0; /* צבע מותג בהיר: רקע אייקון בכפתור המודגש */
+  --line:rgba(38,18,53,.14);
+  --font-display:'Amatic SC','Assistant',sans-serif;
+  --font-body:'Assistant',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --display-size:44px;   /* Amatic SC קטן מטבעו. לפונטים רגילים: 34px */
+  --ease:cubic-bezier(.16,1,.3,1);
+  --shell:min(520px,100%);
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img,video{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+[hidden]{display:none!important}
+
+.shell{
+  width:var(--shell);
+  margin-inline:auto;
+  padding-bottom:calc(48px + env(safe-area-inset-bottom,0px));
+  overflow-x:clip;
+}
+
+/* ---------- HERO (תמונה או סרטון למעלה, אופציונלי) ---------- */
+.hero{
+  position:relative;
+  width:100%;
+  aspect-ratio:3/4;
+  max-height:min(62vh,620px);
+  overflow:hidden;
+  background:var(--ink);
+}
+.hero video,.hero img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center 50%;
+}
+.hero::after{
+  content:'';
+  position:absolute;inset:auto 0 -1px 0;
+  height:42%;
+  background:linear-gradient(to bottom,transparent 0%,color-mix(in srgb,var(--bg) 55%,transparent) 52%,var(--bg) 100%);
+  pointer-events:none;
+}
+.sound{
+  position:absolute;
+  top:calc(14px + env(safe-area-inset-top,0px));
+  inset-inline-start:14px;
+  z-index:3;
+  width:40px;height:40px;
+  display:grid;place-items:center;
+  border:0;border-radius:50%;
+  background:rgba(0,0,0,.4);
+  backdrop-filter:blur(8px);
+  color:#fff;cursor:pointer;
+  transition:background .2s var(--ease),transform .2s var(--ease);
+}
+.sound:hover{background:rgba(0,0,0,.6);transform:scale(1.06)}
+.sound svg{width:20px;height:20px}
+
+/* ---------- IDENTITY ---------- */
+.identity{
+  position:relative;
+  z-index:2;
+  margin-top:-62px;
+  padding:0 24px;
+  text-align:center;
+}
+.no-hero .identity{margin-top:0;padding-top:calc(48px + env(safe-area-inset-top,0px))}
+.avatar{
+  width:124px;height:124px;
+  margin:0 auto 14px;
+  border-radius:50%;
+  overflow:hidden;
+  border:4px solid var(--bg);
+  box-shadow:0 10px 30px rgba(0,0,0,.16);
+  background:var(--accent-soft);
+  display:grid;place-items:center;
+  font-family:var(--font-display);
+  font-size:46px;
+  color:var(--accent-deep);
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.name{
+  margin:0 0 2px;
+  font-family:var(--font-display);
+  font-size:var(--display-size);
+  font-weight:700;
+  line-height:1.15;
+}
+.subname{
+  margin:0;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:.04em;
+  color:var(--accent-deep);
+}
+.bio{
+  margin:18px auto 0;
+  max-width:min(39ch,100%);
+  font-size:16px;
+  line-height:1.65;
+  color:var(--ink-soft);
+}
+.bio strong{font-weight:700}
+
+/* ---------- SOCIAL ICONS ---------- */
+.socials{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  margin:20px 0 0;
+}
+.socials a{
+  width:44px;height:44px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:var(--bg-soft);
+  border:1px solid var(--line);
+  transition:transform .22s var(--ease),background .22s var(--ease),border-color .22s var(--ease);
+}
+.socials a:hover{transform:translateY(-3px);background:#fff;border-color:var(--accent)}
+.socials svg{width:21px;height:21px;fill:var(--ink)}
+
+/* ---------- INTRO VIDEO (סרטון היכרות קטן, אופציונלי) ---------- */
+.intro{
+  position:relative;
+  width:min(240px,64%);
+  margin:36px auto 0;
+  aspect-ratio:9/16;
+  overflow:hidden;
+  background:var(--ink);
+  box-shadow:0 12px 32px rgba(0,0,0,.18);
+}
+.intro video{width:100%;height:100%;object-fit:cover}
+.intro .sound{top:auto;bottom:10px;inset-inline-start:auto;inset-inline-end:10px;width:34px;height:34px}
+.intro .sound svg{width:17px;height:17px}
+
+/* ---------- SECTIONS ---------- */
+.section{margin:38px 20px 0}
+.eyebrow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:0 0 14px;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.06em;
+  color:var(--muted);
+}
+.eyebrow span{flex:0 0 auto}
+.eyebrow::after{
+  content:'';
+  flex:1 1 auto;
+  height:1px;
+  background:linear-gradient(to left,var(--line),transparent);
+}
+
+/* ---------- LINK BUTTONS ---------- */
+.links{display:flex;flex-direction:column;gap:11px}
+.link{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-height:66px;
+  padding:10px 12px 10px 18px;
+  background:var(--bg-soft);
+  border:1px solid var(--line);
+  border-radius:50px;
+  transition:transform .22s var(--ease),background .22s var(--ease),border-color .22s var(--ease),box-shadow .22s var(--ease);
+}
+.link:hover{
+  transform:translateY(-2px);
+  background:#fff;
+  border-color:var(--accent);
+  box-shadow:0 8px 22px rgba(0,0,0,.08);
+}
+.link .thumb{
+  flex:0 0 46px;
+  width:46px;height:46px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:var(--bg);
+  border:1px solid var(--line);
+  font-size:19px;
+  overflow:hidden;
+}
+.link .thumb img{width:100%;height:100%;object-fit:cover}
+.link .body{flex:1 1 auto;min-width:0}
+.link .t{display:block;font-size:15px;font-weight:700;line-height:1.3}
+.link .s{display:block;margin-top:3px;font-size:12.5px;color:var(--muted);line-height:1.4}
+.link .arrow{
+  flex:0 0 auto;
+  width:18px;height:18px;
+  fill:var(--muted);
+  transition:transform .22s var(--ease),fill .22s var(--ease);
+}
+.link:hover .arrow{transform:translateX(-4px);fill:var(--accent-deep)}
+
+/* הכפתור המודגש: ההצעה הכי חשובה בעמוד */
+.link-hot{
+  margin-top:22px;
+  border-color:var(--accent);
+  background:#fff;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent),0 10px 26px rgba(0,0,0,.1);
+}
+.link-hot .t{font-size:16px}
+.link-hot .thumb{background:var(--accent-soft);border-color:var(--accent)}
+.links > .link-hot:first-child{margin-top:12px}
+.patch{
+  position:absolute;
+  top:-16px;
+  inset-inline-end:14px;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:1px;
+  padding:6px 11px 7px;
+  border-radius:8px;
+  background:var(--accent-deep);
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+  line-height:1.15;
+  white-space:nowrap;
+  transform:rotate(-7deg);
+  box-shadow:0 4px 12px rgba(0,0,0,.22);
+}
+.patch b{font-size:15px;font-weight:800}
+
+/* ---------- SOCIAL PROOF MARQUEE (צילומי המלצות, אופציונלי) ---------- */
+.proof{margin:40px 0 0}
+.proof .eyebrow{margin:0 20px 14px}
+.mq{
+  position:relative;
+  direction:ltr;
+  overflow:hidden;
+  width:100%;
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%);
+          mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%);
+}
+.mq + .mq{margin-top:12px}
+.mq-track{
+  display:flex;
+  width:max-content;
+  animation:mq-run 60s linear infinite;
+  will-change:transform;
+}
+.mq-track img{
+  flex:0 0 auto;
+  height:168px;
+  width:auto;
+  margin-right:12px;
+  background:#fff;
+  border:1px solid var(--line);
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
+}
+.mq-sm .mq-track{animation-duration:48s;animation-direction:reverse}
+.mq-sm .mq-track img{height:92px;margin-right:10px}
+@media (hover:hover) and (pointer:fine){
+  .mq:hover .mq-track{animation-play-state:paused}
+}
+@keyframes mq-run{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (max-width:420px){
+  .mq-track img{height:140px}
+  .mq-sm .mq-track img{height:76px}
+}
+
+/* ---------- FOOTER ---------- */
+.foot{margin:34px 20px 0;text-align:center}
+.foot .sig{
+  display:block;
+  font-family:var(--font-display);
+  font-size:calc(var(--display-size) * .6);
+  font-weight:700;
+  line-height:1.4;
+  color:var(--ink);
+}
+
+/* ---------- REVEAL ---------- */
+.rv{opacity:0;transform:translateY(14px)}
+.rv.in{opacity:1;transform:none;transition:opacity .55s var(--ease),transform .55s var(--ease)}
+
+@media (prefers-reduced-motion:reduce){
+  *:not(.mq-track){animation:none!important;transition-duration:.01ms!important}
+  .rv{opacity:1;transform:none}
+}
+@media (max-width:360px){
+  .name{font-size:calc(var(--display-size) * .86)}
+  .link{min-height:60px}
+  .link .t{font-size:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- בלי תמונה/סרטון למעלה: למחוק את בלוק ה-HERO ולהוסיף class="shell no-hero" -->
+<main class="shell">
+
+  <!-- ===== BLOCK: HERO-VIDEO (סרטון למעלה). להחליף בבלוק HERO-IMAGE אם יש רק תמונה ===== -->
+  <section class="hero">
+    <video id="heroVid" src="assets/hero.mp4" poster="assets/hero-poster.jpg"
+           autoplay muted loop playsinline preload="metadata"></video>
+    <button class="sound" id="heroSound" type="button" aria-label="הפעלת קול">
+      <svg class="i-off" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M19.8 4.2 4.2 19.8l1.4 1.4L21.2 5.6z"/></svg>
+      <svg class="i-on" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1c3 .9 5 3.6 5 6.7s-2 5.8-5 6.7v2.1c4.1-.9 7-4.5 7-8.8s-2.9-7.9-7-8.8z"/></svg>
+    </button>
+  </section>
+  <!-- ===== /BLOCK ===== -->
+
+  <!-- ===== BLOCK: HERO-IMAGE (במקום הסרטון) =====
+  <section class="hero">
+    <img src="assets/hero.jpg" alt="">
+  </section>
+  ===== /BLOCK ===== -->
+
+  <section class="identity">
+    <!-- בלי תמונת פרופיל: להשאיר <div class="avatar">א</div> עם האות הראשונה של השם -->
+    <div class="avatar"><img src="assets/avatar.jpg" alt="{{NAME}}"></div>
+    <h1 class="name">{{NAME}}</h1>
+    <p class="subname">{{SUBTITLE}}</p>
+    <p class="bio">
+      {{BIO_LINE_1}}<br>
+      {{BIO_LINE_2}}<br>
+      <strong>{{BIO_BOLD_LINE}}</strong>
+    </p>
+
+    <!-- ===== BLOCK: SOCIALS. להשאיר רק את מה שנבחר. האייקונים ב-SKILL.md ===== -->
+    <nav class="socials" aria-label="רשתות">
+      <a href="{{URL}}" target="_blank" rel="noopener" aria-label="{{LABEL}}">{{SVG_ICON}}</a>
+    </nav>
+    <!-- ===== /BLOCK ===== -->
+  </section>
+
+  <!-- ===== BLOCK: INTRO-VIDEO (סרטון היכרות קטן, אופציונלי) =====
+  <div class="intro rv">
+    <video id="introVid" src="assets/intro.mp4" poster="assets/intro-poster.jpg" muted loop playsinline preload="metadata"></video>
+    <button class="sound" id="introSound" type="button" aria-label="הפעלת קול">
+      (אותם שני אייקוני i-off / i-on כמו בסרטון העליון)
+    </button>
+  </div>
+  ===== /BLOCK ===== -->
+
+  <!-- ===== BLOCK: SECTION (לשכפל לכל קבוצת לינקים) ===== -->
+  <section class="section">
+    <h2 class="eyebrow"><span>{{SECTION_TITLE}}</span></h2>
+    <div class="links">
+
+      <!-- כפתור מודגש עם מדבקה. אחד בלבד בכל העמוד. בלי מדבקה: למחוק את span.patch -->
+      <a class="link link-hot rv" href="{{URL}}" target="_blank" rel="noopener">
+        <span class="patch"><b>{{PATCH_BIG}}</b>{{PATCH_SMALL}}</span>
+        <span class="thumb">{{EMOJI}}</span>
+        <span class="body">
+          <span class="t">{{LINK_TITLE}}</span>
+          <span class="s">{{LINK_LINE}}</span>
+        </span>
+        <svg class="arrow" viewBox="0 0 24 24"><path d="M14 6l-6 6 6 6z"/></svg>
+      </a>
+
+      <!-- כפתור רגיל -->
+      <a class="link rv" href="{{URL}}" target="_blank" rel="noopener">
+        <span class="thumb">{{EMOJI}}</span>
+        <span class="body">
+          <span class="t">{{LINK_TITLE}}</span>
+          <span class="s">{{LINK_LINE}}</span>
+        </span>
+        <svg class="arrow" viewBox="0 0 24 24"><path d="M14 6l-6 6 6 6z"/></svg>
+      </a>
+
+    </div>
+  </section>
+  <!-- ===== /BLOCK ===== -->
+
+  <!-- ===== BLOCK: PROOF (צילומי המלצות, אופציונלי) =====
+  כל שורה מכילה את התמונות שלה פעמיים ברצף, כדי שהגלילה תהיה אינסופית בלי קפיצה.
+  צריך לפחות 6 תמונות. מחלקים לשתי שורות: גדולה (mq) וקטנה (mq-sm).
+  <section class="proof">
+    <h2 class="eyebrow"><span>מה אומרות עליי</span></h2>
+    <div class="mq"><div class="mq-track">
+      <img src="assets/proof/p01.jpg" alt="המלצה" decoding="async"> ... p01..p06 ואז שוב p01..p06
+    </div></div>
+    <div class="mq mq-sm"><div class="mq-track">
+      <img src="assets/proof/p07.jpg" alt="המלצה" decoding="async"> ... p07..p12 ואז שוב p07..p12
+    </div></div>
+  </section>
+  ===== /BLOCK ===== -->
+
+  <footer class="foot">
+    <span class="sig">{{SIGNATURE}}</span>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  'use strict';
+
+  /* כפתור קול לסרטון: עובד גם לסרטון העליון וגם לסרטון ההיכרות */
+  function wireSound(vidId, btnId){
+    var v = document.getElementById(vidId), b = document.getElementById(btnId);
+    if (!v || !b) return;
+    var toggle = function(){
+      v.muted = !v.muted;
+      b.querySelector('.i-off').hidden = !v.muted;
+      b.querySelector('.i-on').hidden = v.muted;
+      b.setAttribute('aria-label', v.muted ? 'הפעלת קול' : 'השתקה');
+      var p = v.play(); if (p && p.catch) p.catch(function(){});
+    };
+    b.addEventListener('click', function(e){ e.stopPropagation(); toggle(); });
+    if (vidId === 'introVid') v.addEventListener('click', toggle);
+  }
+  wireSound('heroVid', 'heroSound');
+  wireSound('introVid', 'introSound');
+
+  /* סרטון ההיכרות מתחיל לנגן רק כשמגיעים אליו */
+  var iv = document.getElementById('introVid');
+  if (iv) {
+    var start = function(){ var p = iv.play(); if (p && p.catch) p.catch(function(){}); };
+    if ('IntersectionObserver' in window) {
+      var vo = new IntersectionObserver(function(es){
+        es.forEach(function(e){ if (e.isIntersecting) { start(); vo.unobserve(e.target); } });
+      }, { threshold: 0.25 });
+      vo.observe(iv);
+    } else { start(); }
+  }
+
+  /* הכפתורים נכנסים בעדינות בגלילה */
+  var items = [].slice.call(document.querySelectorAll('.rv'));
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -40px 0px', threshold: 0.08 });
+    items.forEach(function(el, i){
+      el.style.transitionDelay = Math.min(i, 8) * 40 + 'ms';
+      io.observe(el);
+    });
+  }
+})();
+</script>
+</body>
+</html>
